@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>솔루션 소개 - 디딤(DIDIM)</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* --- Base & Global Styles (Consistent with site) --- */
+        :root {
+            --primary-color: #2a7a7b;
+            --secondary-color: #00a896;
+            --accent-color: #f4a261;
+            --text-color: #333;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --box-shadow-heavy: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            color: var(--text-color);
+            line-height: 1.7;
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        main {
+            overflow-x: hidden;
+        }
+
+        /* --- Header (Consistent) --- */
+        .header {
+            background: var(--white);
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-color); text-decoration: none; }
+        .nav-links a { margin-left: 25px; text-decoration: none; color: var(--text-color); font-weight: 500; transition: color 0.3s; padding-bottom: 5px; }
+        .nav-links a:hover { color: var(--primary-color); }
+        .nav-links a.active { color: var(--primary-color); font-weight: 700; border-bottom: 2px solid var(--primary-color); }
+
+        /* --- Page Title Section --- */
+        .page-title {
+            background-color: var(--light-gray);
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .page-title h1 { font-size: 3rem; margin: 0 0 15px 0; color: var(--primary-color); line-height: 1.3; }
+        .page-title p { font-size: 1.2rem; color: #555; max-width: 800px; margin: 0 auto; }
+
+        /* --- Module Section General Styling --- */
+        .module-section {
+            padding: 100px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .module-section:last-of-type { border-bottom: none; }
+        .module-headline {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .module-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* --- Module 1: Simulator (Revised Graphics) --- */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .tab {
+            padding: 12px 25px;
+            border-radius: 50px;
+            background-color: #e9ecef;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .tab.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            box-shadow: 0 4px 10px rgba(42, 122, 123, 0.3);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .css-mockup {
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            width: 80%;
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-heavy);
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .css-mockup .mockup-title { font-weight: bold; color: var(--primary-color); margin-bottom: 20px; }
+        .kiosk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 80%; }
+        .kiosk-grid .button { background: #e9ecef; color: #333; text-align: center; padding: 20px; border-radius: 8px; }
+        .chat-window { width: 80%; }
+        .chat-bubble { background: #e9ecef; padding: 10px 15px; border-radius: 20px; margin-bottom: 10px; max-width: 70%; }
+        .chat-bubble.user { background: #fef0e0; margin-left: auto; border-bottom-right-radius: 5px; }
+        .chat-bubble.bot { background: #e6f2f2; margin-right: auto; border-bottom-left-radius: 5px; }
+
+        .special-features {
+            margin-top: 80px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .feature-card-detailed {
+            background: var(--light-gray);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+        .feature-card-detailed h4 { font-size: 1.4rem; color: var(--primary-color); margin-top: 0; margin-bottom: 15px; }
+        .feature-card-detailed p { font-size: 1rem; line-height: 1.6; flex-grow: 1; }
+        .feature-visual {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        .before-after-visual { gap: 15px; }
+        .before-after-visual .icon-box { border: 2px dashed #ccc; padding: 15px; border-radius: 8px; }
+        .before-after-visual .arrow { color: var(--primary-color); font-weight: bold; }
+        .therapist-panel-visual { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center; font-size: 1rem; }
+        .therapist-panel-visual .child-screen { background: #333; color: white; padding: 10px; border-radius: 4px; }
+        .therapist-panel-visual .therapist-controls button { display: block; width: 100%; margin-bottom: 5px; background: #e0e0e0; border: none; padding: 5px; border-radius: 4px; }
+        .difficulty-progression { width: 100%; display: flex; align-items: center; justify-content: space-around; gap: 10px; }
+        .difficulty-level { border: 2px solid #e0e0e0; border-radius: 8px; padding: 10px; flex: 1; }
+        .difficulty-level .dot { display: inline-block; width: 15px; height: 15px; background: #ccc; border-radius: 50%; margin: 2px; }
+        .difficulty-level.level-2 .dot { background: var(--accent-color); }
+        .difficulty-level.level-3 .dot { background: var(--secondary-color); }
+
+        /* --- Module 2: AI Engine (Revised Graphics) --- */
+        #module2 { background-color: var(--light-gray); }
+        .analysis-data-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        .data-type-card { background: var(--white); padding: 25px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); }
+        .data-type-card .icon { font-size: 3rem; color: var(--primary-color); margin-bottom: 15px; }
+        .data-type-card h4 { font-size: 1.4rem; margin-bottom: 10px; }
+
+        .live-demo-container {
+            position: relative;
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-heavy);
+            overflow: hidden;
+        }
+        .live-demo-container h4 { text-align: center; font-size: 1.5rem; margin-top: 0; margin-bottom: 20px; }
+        .css-kiosk-mockup {
+            position: relative;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 15px;
+            min-height: 300px;
+        }
+        .css-kiosk-mockup .screen-title { grid-column: 1 / 3; font-weight: bold; text-align: center; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
+        .css-kiosk-mockup .menu-item { background: var(--white); border-radius: 8px; padding: 20px; text-align: center; }
+        .analysis-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .click-path { position: absolute; border: 2px dotted var(--accent-color); border-radius: 50%; opacity: 0; animation: draw-path 1.5s 0.5s forwards; }
+        @keyframes draw-path { to { opacity: 1; } }
+        .heatmap-dot { position: absolute; background: radial-gradient(circle, rgba(255,255,0,0.6) 0%, rgba(255,0,0,0.0) 60%); border-radius: 50%; opacity: 0; transform: scale(0); animation: fade-in-heatmap 1s 2s forwards; }
+        @keyframes fade-in-heatmap { to { opacity: 1; transform: scale(1); } }
+        .analysis-controls { text-align: center; margin-top: 20px; }
+        .report-pane {
+            position: absolute;
+            top: 0; right: 0;
+            width: 300px; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-left: 1px solid #ddd;
+            padding: 20px;
+            transform: translateX(100%);
+            transition: transform 0.5s ease-in-out;
+            box-sizing: border-box;
+        }
+        .report-pane.active { transform: translateX(0); }
+        .report-pane h5 { margin-top: 0; color: var(--primary-color); }
+        .report-pane p { font-size: 0.9rem; margin-bottom: 10px; opacity: 0; animation: fade-in-text 0.5s forwards; }
+        @keyframes fade-in-text { to { opacity: 1; } }
+
+        /* --- Module 3: Dashboard (Revised Graphics) --- */
+        .ultimate-dashboard {
+            background: var(--light-gray);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-heavy);
+        }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .dashboard-header h4 { font-size: 1.5rem; margin: 0; }
+        .date-filter { background: var(--white); padding: 8px 12px; border-radius: 8px; font-weight: 500; }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 25px;
+        }
+        .main-chart-card { grid-column: 1 / 2; grid-row: 1 / 3; background: var(--white); padding: 20px; border-radius: var(--border-radius); min-height: 400px; }
+        .dashboard-card-small { background: var(--white); padding: 20px; border-radius: var(--border-radius); }
+        .dashboard-card-small h5 { margin-top: 0; margin-bottom: 15px; font-size: 1.1rem; }
+        .visual-maps-container { display: flex; gap: 15px; height: 120px; }
+        .css-heatmap, .css-clickpath { flex: 1; border-radius: 4px; border: 1px solid #eee; position: relative; overflow: hidden; }
+        .css-heatmap { background: linear-gradient(to bottom right, #f0f8ff, #e6e9f0); }
+        .css-heatmap .dot { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,0,0,0.5) 0%, rgba(255,0,0,0) 70%); }
+        .css-clickpath { background: #f8f8f8; }
+        .css-clickpath svg { width: 100%; height: 100%; }
+        .css-clickpath path { fill: none; stroke: var(--accent-color); stroke-width: 3; stroke-dasharray: 150; stroke-dashoffset: 150; animation: draw-svg-path 2s ease-out forwards; }
+        @keyframes draw-svg-path { to { stroke-dashoffset: 0; } }
+        .progress-bars-container .progress-item { margin-bottom: 12px; }
+        .progress-bars-container .progress-item label { display: block; margin-bottom: 4px; font-weight: 500; }
+        .progress-bar { background: #e9ecef; border-radius: 50px; height: 20px; overflow: hidden; }
+        .progress-bar div { height: 100%; background-color: var(--secondary-color); border-radius: 50px; text-align: right; padding-right: 8px; color: white; font-size: 0.8rem; line-height: 20px; white-space: nowrap; }
+        .ai-summary-card { background: #e6f2f2; border-left: 5px solid var(--primary-color); }
+        .ai-summary-card p { font-size: 0.95rem; }
+
+        /* --- Final CTA & Footer --- */
+        .final-cta { text-align: center; padding: 80px 0; }
+        .button-large { padding: 15px 40px; font-size: 1.2rem; }
+        .footer { background: #222; color: #ccc; padding: 50px 0; text-align: center; }
+        .footer .logo { color: var(--white); }
+        .footer-nav { margin: 20px 0; }
+        .footer-nav a { color: #ccc; text-decoration: none; margin: 0 15px; transition: color 0.3s; }
+        .footer-nav a:hover { color: var(--white); }
+        .copyright { font-size: 0.9rem; color: #888; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .features-grid { grid-template-columns: 1fr; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .main-chart-card { grid-row: auto; }
+        }
+        @media (max-width: 768px) {
+            .header .container { flex-direction: column; }
+            .nav-links { margin-top: 15px; }
+            .nav-links a { margin: 0 10px; }
+            .page-title h1 { font-size: 2.2rem; }
+            .analysis-data-grid { grid-template-columns: 1fr; }
+            .report-pane { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">🌱 디딤(DIDIM)</a>
+            <nav class="nav-links">
+                <a href="background.html">제안 배경</a>
+                <a href="solution.html" class="active">솔루션 소개</a>
+                <a href="about.html">목표와 파트너</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Title -->
+        <section class="page-title">
+            <h1>✨ '디딤' 솔루션: 기술로 구현하는 초개인화 성장 프로그램</h1>
+            <p>3가지 핵심 모듈이 유기적으로 작동하여, 우리 아이만을 위한 최적의 훈련 환경과 데이터 기반의 성장 로드맵을 만듭니다.</p>
+        </section>
+
+        <!-- Module 1: Hi-Fi Reality Simulator -->
+        <section id="module1" class="module-section">
+            <div class="container">
+                <h2 class="module-headline">📱 모듈 1: 현실보다 더 현실 같은, 하이-피델리티 시뮬레이터</h2>
+                <p class="module-description">두려움 없이 마음껏 실패하고 배울 수 있는 안전한 디지털 놀이터입니다. 실제 세상과 거의 동일한 환경에서 성공 경험을 반복적으로 쌓으며 자신감을 키웁니다.</p>
+
+                <!-- Basic Training Content -->
+                <h4>기본 훈련 콘텐츠</h4>
+                <div class="tabs-container">
+                    <div class="tab active" onclick="switchTab(event, 'tab-living')">🍔 생활 편의</div>
+                    <div class="tab" onclick="switchTab(event, 'tab-online')">💬 온라인 소통</div>
+                    <div class="tab" onclick="switchTab(event, 'tab-info')">🗺️ 정보 활용</div>
+                </div>
+                <div id="tab-living" class="tab-content active">
+                    <div class="css-mockup">
+                        <div class="mockup-title">키오스크 주문</div>
+                        <div class="kiosk-grid">
+                            <div class="button">새우버거 세트</div>
+                            <div class="button">치킨버거 세트</div>
+                            <div class="button">치즈버거</div>
+                            <div class="button">콜라</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-online" class="tab-content">
+                    <div class="css-mockup">
+                        <div class="mockup-title">메시지 보내기</div>
+                        <div class="chat-window">
+                            <div class="chat-bubble bot">안녕하세요! 무엇을 도와드릴까요?</div>
+                            <div class="chat-bubble user">오늘 날씨 어때?</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-info" class="tab-content">
+                    <div class="css-mockup">
+                        <canvas id="mapChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Special Features -->
+                <div class="special-features">
+                    <h3 style="text-align:center; font-size: 1.8rem; margin-bottom: 40px;">핵심 특화 기능</h3>
+                    <div class="features-grid">
+                        <div class="feature-card-detailed">
+                            <h4>📍 우리 동네 맞춤 모드</h4>
+                            <div class="feature-visual before-after-visual">
+                                <div class="icon-box">📸</div>
+                                <div class="arrow">→</div>
+                                <div class="icon-box">✨</div>
+                            </div>
+                            <p>치료사가 우리 동네 매장 사진을 업로드하면, AI가 UI를 분석해 유사한 훈련 환경을 자동 생성합니다. 아이에게 가장 익숙한 환경으로 훈련하여 현실 적응력을 극대화합니다.</p>
+                        </div>
+                        <div class="feature-card-detailed">
+                            <h4>⚡ 돌발 상황 개입 모드</h4>
+                            <div class="feature-visual">
+                                <div class="therapist-panel-visual">
+                                    <div class="child-screen">🚫<br>메뉴 품절</div>
+                                    <div class="therapist-controls">
+                                        <button>품절</button>
+                                        <button>결제 오류</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p>치료사가 훈련 중 실시간으로 돌발 상황을 발생시켜, 아동의 문제 해결 및 상황 대처 능력을 집중적으로 훈련시킬 수 있습니다.</p>
+                        </div>
+                        <div class="feature-card-detailed">
+                            <h4>📈 AI 기반 동적 난이도 조절</h4>
+                            <div class="feature-visual difficulty-progression">
+                                <div class="difficulty-level level-1"><div><span class="dot"></span><span class="dot"></span></div><div><span class="dot"></span><span class="dot"></span></div></div>
+                                <div class="arrow">→</div>
+                                <div class="difficulty-level level-2"><div><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+                                <div class="arrow">→</div>
+                                <div class="difficulty-level level-3"><div><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+                            </div>
+                            <p>AI가 아동의 성공률을 분석해 버튼 개수, 제한 시간 등을 자동 조절합니다. <strong>'적절한 수준의 도전 과제'</strong>를 제공하여 성장을 촉진합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module 2: AI Multi-modal Analysis Engine -->
+        <section id="module2" class="module-section">
+            <div class="container">
+                <h2 class="module-headline">🧠 모듈 2: 치료사의 눈과 경험을 데이터로 번역하는, AI 분석 엔진</h2>
+                <p class="module-description">단순한 성공/실패 기록을 넘어, '인공지능 조수'가 훈련 과정에서 발생하는 수많은 비정형 데이터를 실시간으로 포착하고 분석하여, 행동 이면에 숨겨진 인지 과정의 실마리를 찾아냅니다.</p>
+                
+                <div class="analysis-data-grid">
+                    <div class="data-type-card">
+                        <div class="icon">👆</div>
+                        <h4>행동 데이터</h4>
+                        <p>과업 수행 시간, 성공/실패율, 오류 패턴, 클릭 경로, 머뭇거림 시간 등</p>
+                    </div>
+                    <div class="data-type-card">
+                        <div class="icon">🖐️</div>
+                        <h4>수행능력 데이터</h4>
+                        <p>터치 압력(자신감), 손떨림(긴장도), 반응 속도 등 소근육 조절 능력 파악</p>
+                    </div>
+                    <div class="data-type-card">
+                        <div class="icon">👀</div>
+                        <h4>인지 데이터</h4>
+                        <p>시선 응시 영역 및 시간 분석을 통해 특정 정보의 인지 여부 파악 (웹캠 기반)</p>
+                    </div>
+                </div>
+
+                <div class="live-demo-container">
+                    <h4>AI가 유의미한 패턴을 발견하는 과정 (Live Demo)</h4>
+                    <div class="css-kiosk-mockup">
+                        <div class="screen-title">영화 티켓 예매</div>
+                        <div class="menu-item">1. 상영관 선택</div>
+                        <div class="menu-item">2. 시간 선택</div>
+                        <div class="menu-item" id="problem-area">3. 할인 수단 선택</div>
+                        <div class="menu-item">4. 결제하기</div>
+                        <div id="analysis-overlay" class="analysis-overlay"></div>
+                    </div>
+                    <div class="analysis-controls">
+                        <button id="start-analysis-btn" class="button-large" style="background-color: var(--secondary-color);">▶️ 분석 시뮬레이션 시작</button>
+                    </div>
+                    <div id="report-pane" class="report-pane">
+                        <h5>AI 실시간 분석 리포트</h5>
+                        <div id="report-content"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Module 3: Professional Progress Dashboard -->
+        <section id="module3" class="module-section">
+            <div class="container">
+                <h2 class="module-headline">📊 모듈 3: 성장을 이야기로 만드는, 전문가용 통합 대시보드</h2>
+                <p class="module-description">수집되고 분석된 모든 데이터는 치료사, 센터장, 학부모가 아이의 성장을 한눈에 이해하고 다음 계획을 함께 논의할 수 있도록, 가장 직관적인 시각적 언어로 번역됩니다.</p>
+                
+                <div class="ultimate-dashboard">
+                    <div class="dashboard-header">
+                        <h4>OOO 아동 통합 성장 리포트</h4>
+                        <div class="date-filter">📅 2025-05-01 ~ 2025-07-20</div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="main-chart-card">
+                            <canvas id="mainDashboardChart"></canvas>
+                        </div>
+                        <div class="dashboard-card-small">
+                            <h5>시각적 분석 맵</h5>
+                            <div class="visual-maps-container">
+                                <div class="css-heatmap">
+                                    <div class="dot" style="top: 40%; left: 50%; width: 80px; height: 80px;"></div>
+                                    <div class="dot" style="top: 60%; left: 20%; width: 40px; height: 40px;"></div>
+                                </div>
+                                <div class="css-clickpath">
+                                    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                                        <path d="M10 80 Q 50 10, 90 70 T 50 90"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-card-small">
+                            <h5>핵심 성장/정체 구간</h5>
+                            <div class="progress-bars-container">
+                                <div class="progress-item">
+                                    <label>메뉴 선택 (95%)</label>
+                                    <div class="progress-bar"><div style="width: 95%;">성장 쑥쑥! 🌱</div></div>
+                                </div>
+                                <div class="progress-item">
+                                    <label>옵션 변경 (88%)</label>
+                                    <div class="progress-bar"><div style="width: 88%;">안정적이에요 👍</div></div>
+                                </div>
+                                <div class="progress-item">
+                                    <label>결제 단계 (65%)</label>
+                                    <div class="progress-bar"><div style="width: 65%; background-color: var(--accent-color);">도움이 필요해요 💡</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dashboard-card-small ai-summary-card" style="grid-column: 1 / 3;">
+                            <h5>✍️ AI 자동 요약 및 인사이트</h5>
+                            <p>지난 8주간 '전체 과업 성공률'은 55%에서 85%로 꾸준히 향상되었으나, '결제' 단계의 성공률은 65%에서 정체되고 있습니다. 클릭 궤적 맵 분석 결과, '다른 결제 수단' 버튼을 누르지 못하고 '뒤로 가기'를 누르는 패턴이 12회 반복되었습니다. 이는 결제 실패 시 대안을 찾는 데 어려움을 겪는다는 명확한 증거입니다. 다음 훈련에서는 '결제 실패' 돌발 상황을 추가하여 대안 찾기 훈련을 집중적으로 진행할 것을 강력히 추천합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="final-cta">
+            <div class="container">
+                <a href="index.html" class="button button-large">🏠 메인 페이지로 돌아가기</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="logo">DIDIM Project</a>
+            <nav class="footer-nav">
+                <a href="background.html">제안 배경</a>
+                <a href="solution.html" class="active">솔루션 소개</a>
+                <a href="about.html">목표와 파트너</a>
+            </nav>
+            <p class="copyright">© 2025 DIDIM. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    // --- Tab Switching Logic for Module 1 ---
+    function switchTab(event, tabID) {
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => content.classList.remove('active'));
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        document.getElementById(tabID).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // --- Chart for Map Tab ---
+    const mapCtx = document.getElementById('mapChart').getContext('2d');
+    new Chart(mapCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['버스 앱으로 도착 시간 확인', '네이버 지도로 길 찾기', '지하철 노선도 보기'],
+            datasets: [{
+                data: [45, 35, 20],
+                backgroundColor: ['#2a7a7b', '#00a896', '#f4a261']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: true, text: '정보 활용 훈련 분포' }
+            }
+        }
+    });
+
+    // --- AI Analysis Simulation for Module 2 ---
+    const analysisBtn = document.getElementById('start-analysis-btn');
+    const overlay = document.getElementById('analysis-overlay');
+    const reportPane = document.getElementById('report-pane');
+    const reportContent = document.getElementById('report-content');
+    const problemArea = document.getElementById('problem-area');
+
+    analysisBtn.addEventListener('click', () => {
+        overlay.innerHTML = '';
+        reportContent.innerHTML = '';
+        reportPane.classList.remove('active');
+        analysisBtn.disabled = true;
+        analysisBtn.textContent = '분석 중...';
+
+        setTimeout(() => {
+            const path = document.createElement('div');
+            path.className = 'click-path';
+            path.style.cssText = `top: ${problemArea.offsetTop + problemArea.offsetHeight/2}px; left: 25%; width: 50%; height: 20%;`;
+            overlay.appendChild(path);
+        }, 500);
+
+        setTimeout(() => {
+            const heatmap = document.createElement('div');
+            heatmap.className = 'heatmap-dot';
+            heatmap.style.cssText = `top: ${problemArea.offsetTop}px; left: ${problemArea.offsetLeft}px; width: ${problemArea.offsetWidth}px; height: ${problemArea.offsetHeight}px;`;
+            overlay.appendChild(heatmap);
+        }, 1500);
+
+        setTimeout(() => { reportPane.classList.add('active'); }, 2500);
+        setTimeout(() => { reportContent.innerHTML += '<p>[분석 중] 데이터 동기화...</p>'; }, 3000);
+        setTimeout(() => { reportContent.innerHTML += '<p>[패턴 발견!] '할인 수단'에서 12초 머뭇거림 감지.</p>'; }, 4000);
+        setTimeout(() => { reportContent.innerHTML += '<p>[데이터 연관 분석] 터치 압력 35% 감소, 시선 분산.</p>'; }, 5500);
+        setTimeout(() => { reportContent.innerHTML += '<p style="font-weight: bold; color: var(--primary-color);">[AI 진단] 인지 과부하 추정.</p>'; }, 7000);
+        
+        setTimeout(() => {
+            analysisBtn.disabled = false;
+            analysisBtn.textContent = '▶️ 분석 재시작';
+        }, 7500);
+    });
+
+    // --- Combined Chart for Module 3 Dashboard ---
+    const dashboardCtx = document.getElementById('mainDashboardChart').getContext('2d');
+    new Chart(dashboardCtx, {
+        type: 'bar',
+        data: {
+            labels: ["1주차", "2주차", "3주차", "4주차", "5주차", "6주차", "7주차", "8주차"],
+            datasets: [
+                {
+                    type: 'line',
+                    label: '전체 과업 성공률 (%)',
+                    data: [55, 62, 68, 70, 75, 80, 82, 85],
+                    borderColor: 'rgb(42, 122, 123)',
+                    backgroundColor: 'rgba(42, 122, 123, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y_percent'
+                },
+                {
+                    type: 'line',
+                    label: '평균 수행 시간 (초)',
+                    data: [120, 110, 105, 95, 85, 80, 78, 72],
+                    borderColor: 'rgb(244, 162, 97)',
+                    backgroundColor: 'rgba(244, 162, 97, 0.1)',
+                    yAxisID: 'y_seconds'
+                },
+                {
+                    type: 'bar',
+                    label: '주간 훈련 시간 (분)',
+                    data: [30, 35, 40, 45, 55, 60, 65, 70],
+                    backgroundColor: 'rgba(0, 168, 150, 0.5)',
+                    yAxisID: 'y_minutes'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: { display: true, text: '주간 훈련 성과 종합 분석', font: { size: 16 } },
+                tooltip: { mode: 'index', intersect: false, }
+            },
+            scales: {
+                y_percent: { type: 'linear', display: true, position: 'left', min: 0, max: 100, title: { display: true, text: '성공률 (%)' } },
+                y_seconds: { type: 'linear', display: true, position: 'right', min: 0, title: { display: true, text: '수행 시간 (초)' }, grid: { drawOnChartArea: false } },
+                y_minutes: { display: false }
+            }
+        }
+    });
+    </script>
+
+</body>
+</html>

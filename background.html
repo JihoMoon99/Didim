@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>왜 '디딤'이 필요한가요? - 디딤(DIDIM)</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* --- Inherited Global Styles --- */
+        :root {
+            --primary-color: #2a7a7b;
+            --secondary-color: #00a896;
+            --text-color: #333;
+            --light-gray: #f8f9fa;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            color: var(--text-color);
+            line-height: 1.7;
+            background-color: #ffffff;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- Header (Same as index.html) --- */
+        .header {
+            background: white;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        /* Active link style */
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        /* --- Page Title Section --- */
+        .page-title {
+            background-color: var(--light-gray);
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .page-title h1 {
+            font-size: 2.8rem;
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* --- AS-IS Section --- */
+        .as-is-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .as-is-section .section-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .pain-points-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .pain-point-card {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .pain-point-card .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .pain-point-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* --- Transition Element --- */
+        .transition-divider {
+            text-align: center;
+            padding: 60px 0;
+            background-color: var(--light-gray);
+        }
+
+        .transition-divider h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        /* --- TO-BE Section --- */
+        .to-be-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .to-be-section .section-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* --- Comparative Chart Section --- */
+        .comparison-chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .comparison-chart-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .comparison-chart-text p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* --- Deep-Dive Dashboard Section --- */
+        .deep-dive-section {
+            background-color: var(--light-gray);
+        }
+
+        .deep-dive-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .deep-dive-section .section-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .analysis-dashboard {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .analysis-dashboard h3 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .video-placeholder {
+            background-color: #e0e0e0;
+            border-radius: var(--border-radius);
+            height: 100%;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+        }
+
+        .video-placeholder .play-icon {
+            font-size: 4rem;
+            color: #888;
+        }
+
+        .ai-data-points ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ai-data-points li {
+            background: var(--light-gray);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .ai-data-points li strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        /* --- CTA Section --- */
+        .cta-section {
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .button:hover {
+            background-color: #226364;
+            transform: translateY(-3px);
+        }
+
+        /* --- Footer (Same as index.html) --- */
+        .footer {
+            background: #222;
+            color: #ccc;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .footer .logo {
+            color: white;
+        }
+        
+        .footer-nav {
+            margin: 20px 0;
+        }
+        
+        .footer-nav a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        
+        .footer-nav a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            .pain-points-grid, .comparison-chart-container, .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            .video-placeholder { margin-bottom: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            .header .container { flex-direction: column; }
+            .nav-links { margin-top: 15px; }
+            .nav-links a { margin: 0 10px; }
+            .page-title h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">🌱 디딤(DIDIM)</a>
+            <nav class="nav-links">
+                <a href="background.html" class="active">제안 배경</a>
+                <a href="solution.html">솔루션 소개</a>
+                <a href="about.html">목표와 파트너</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Title Section -->
+        <section class="page-title">
+            <h1>왜 '디딤'이 필요한가요?</h1>
+            <p>기존 훈련의 명확한 한계와 데이터 기반 정밀 치료의 필요성</p>
+        </section>
+
+        <!-- AS-IS Section -->
+        <section class="as-is-section">
+            <div class="container">
+                <h2>👎 AS-IS: 기존 현장 실습 방식의 명확한 한계</h2>
+                <p class="section-description">현재 대부분의 디지털 적응 훈련은 치료사가 아동과 실제 매장에 동행하는 방식에 의존합니다. 이 방식은 많은 시간과 비용이 소요될 뿐만 아니라, 우리가 미처 보지 못하는 문제들을 안고 있습니다.</p>
+                <div class="pain-points-grid">
+                    <div class="pain-point-card">
+                        <div class="icon">⏳</div>
+                        <h3>비효율성</h3>
+                        <p>이동 시간, 인력 문제 등 많은 자원이 소모됩니다.</p>
+                    </div>
+                    <div class="pain-point-card">
+                        <div class="icon">🤯</div>
+                        <h3>통제 불가능성</h3>
+                        <p>매장의 소음, 대기 줄 등 돌발 변수가 아동의 불안감을 높여 훈련 효과를 떨어뜨립니다.</p>
+                    </div>
+                    <div class="pain-point-card">
+                        <div class="icon">❓</div>
+                        <h3>객관성 부재</h3>
+                        <p>치료사의 주관적 관찰에 의존해 '깜깜이 치료'라는 불신을 낳고, 성과 증명이 어렵습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transition Element -->
+        <div class="transition-divider">
+            <h2>그래서, '디딤'은 치료의 패러다임을 전환합니다.</h2>
+        </div>
+
+        <!-- TO-BE Section -->
+        <section class="to-be-section">
+            <div class="container">
+                <h2>✨ TO-BE: 데이터 기반 정밀 분석 및 예측</h2>
+                <p class="section-description">'디딤'은 안전한 가상 환경에서 사용자의 행동, 인지, 수행 능력을 실시간으로 수집하고 AI로 분석합니다. 이를 통해 치료사는 눈으로 볼 수 없었던 문제의 핵심 원인을 파악하고, 아동에게 최적화된 맞춤형 치료를 제공할 수 있습니다.</p>
+                
+                <div class="comparison-chart-container">
+                    <div class="comparison-chart-text">
+                        <h3>📊 '관찰'과 '데이터'의 극명한 차이</h3>
+                        <p>주관적 관찰에 의존하는 기존 방식과 데이터로 증명하는 '디딤'의 차이를 그래프로 확인해 보세요. '디딤'은 훈련 성과를 객관적으로 측정하고, 다음 단계를 과학적으로 예측합니다.</p>
+                    </div>
+                    <div class="comparison-chart">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deep-Dive Dashboard Section -->
+        <section class="deep-dive-section">
+            <div class="container">
+                <h2>🔬 '깜깜이 치료'를 해결하는 AI 분석 예시</h2>
+                <p class="section-description">예를 들어, 아동이 키오스크 앞에서 특정 행동을 보일 때, '디딤'은 그 순간을 데이터로 포착하여 아래와 같은 심층 리포트를 제공합니다.</p>
+                <div class="analysis-dashboard">
+                    <h3>상황 분석: '주문 메뉴 품절' 돌발 상황</h3>
+                    <div class="analysis-grid">
+                        <div class="video-placeholder">
+                            <div class="play-icon">▶️</div>
+                            <p>훈련 영상 (01:32)</p>
+                        </div>
+                        <div class="ai-data-points">
+                            <ul>
+                                <li><strong>🧠 핵심 문제 패턴:</strong> "결제 버튼 앞에서 평균 11초 이상 머뭇거림"</li>
+                                <li><strong>🖐️ 수행 능력 데이터:</strong> "터치 압력 40% 증가 (결정 장애 및 불안감 상승 추정)"</li>
+                                <li><strong>👀 인지 데이터:</strong> "시선이 화면 좌측 상단에 15초간 고정 (대안 메뉴를 인지하지 못함)"</li>
+                                <li><strong>✍️ AI 인사이트 요약:</strong> "단순히 '못하는 것'이 아니라, 돌발 상황에서 대안 정보를 인지하는 데 어려움을 겪는 것이 핵심 원인으로 보입니다."</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <a href="index.html" class="button">🏠 메인 페이지로 돌아가기</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="logo">DIDIM Project</a>
+            <nav class="footer-nav">
+                <a href="background.html" class="active">제안 배경</a>
+                <a href="solution.html">솔루션 소개</a>
+                <a href="about.html">목표와 파트너</a>
+            </nav>
+            <p class="copyright">© 2025 DIDIM. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    // --- Chart.js Setup for Comparison Chart ---
+
+    // 1. Get the context of the canvas element
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+
+    // 2. Define the data for the chart
+    const comparisonData = {
+        labels: ['객관적 데이터 정확도', '훈련 성과 예측 가능성'],
+        datasets: [
+            {
+                label: '기존 훈련 방식',
+                data: [45, 30],
+                backgroundColor: '#cccccc',
+                borderColor: '#999999',
+                borderWidth: 1
+            },
+            {
+                label: "'디딤' 활용 방식",
+                data: [95, 92],
+                backgroundColor: 'rgba(42, 122, 123, 0.7)', // Primary color with transparency
+                borderColor: '#2a7a7b',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    // 3. Configure the chart options
+    const comparisonConfig = {
+        type: 'bar',
+        data: comparisonData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: '훈련 방식에 따른 성과 비교'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: '평가 점수 (%)'
+                    }
+                }
+            }
+        }
+    };
+
+    // 4. Create and render the chart
+    const comparisonChart = new Chart(ctx, comparisonConfig);
+    </script>
+
+</body>
+</html>
