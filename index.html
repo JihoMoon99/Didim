@@ -3,502 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 기반 발달장애 디지털 적응 훈련 솔루션 '디딤'</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>디딤(DIDIM) - AI 디지털 치료 솔루션</title>
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals & Calming Blue -->
-    <!-- Application Structure Plan: 이 SPA는 전통적인 보고서 형식을 탈피하여, 사용자가 프로젝트의 핵심 스토리를 단계적으로 따라갈 수 있는 '서사적 흐름'으로 설계되었습니다. (1) '문제 제기(현실의 벽)'에서 시작하여 (2) '솔루션 소개(디딤)'로 자연스럽게 넘어가고, (3) '솔루션의 작동 방식'을 인터랙티브 차트와 다이어그램으로 시각적으로 보여줍니다. 이후 (4) '파트너십 모델'과 (5) '시장 기회'를 제시하여 사업의 신뢰성과 성장 가능성을 부각하고, 마지막으로 (6) '리스크 분석'을 투명하게 공개하여 제안의 완성도를 높입니다. 이러한 구조는 사용자가 '왜' 이 사업이 필요한지 공감하고, '무엇을' 제공하는지 이해하며, '어떻게' 성공할 수 있을지에 대한 확신을 갖도록 유도하기 위해 선택되었습니다. -->
-    <!-- Visualization & Content Choices: 
-        1. 현황 비교 (정보 제공 목표): 현재 훈련 방식의 한계와 디지털 전환의 필요성을 나란히 배치한 카드 UI(HTML/Tailwind)로 직관적 비교. 상호작용: 호버 시 강조 효과. 이유: 텍스트 정보를 시각적으로 그룹화하여 문제의 심각성을 즉각적으로 인지시킴.
-        2. 훈련 성과 추이 (변화 시각화 목표): 특정 아동의 훈련 성과(과업 수행 시간)가 시간에 따라 개선되는 모습을 보여주는 라인 차트(Chart.js). 상호작용: 드롭다운으로 다른 훈련 과제 선택 시 차트 데이터 동적 업데이트. 이유: '데이터 기반 경과 추적'이라는 솔루션의 핵심 가치를 가장 효과적으로 보여주는 시각화 방식.
-        3. 시선 히트맵 시뮬레이션 (관계/패턴 분석 목표): 키오스크 화면 위에 사용자의 시선이 머문 위치를 보여주는 가상 히트맵(Canvas API). 상호작용: 버튼 클릭으로 '성공'과 '실패' 시의 시선 패턴 전환. 이유: AI의 '시선 분석'이라는 추상적 개념을 사용자가 직관적으로 이해할 수 있는 구체적인 시각 자료로 변환.
-        4. 리스크 분석 (정보 조직화 목표): 다양한 리스크와 대응 방안을 카테고리별로 정리한 아코디언 UI(HTML/JS). 상호작용: 카테고리 클릭 시 상세 내용 확장/축소. 이유: 복잡하고 많은 텍스트 정보를 깔끔하게 정리하여 사용자가 원하는 정보에 쉽게 접근할 수 있도록 함.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; }
-        .tab-btn.active { border-color: #3b82f6; color: #3b82f6; font-weight: 700; }
-        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
-        @media (min-width: 768px) { .chart-container { height: 400px; } }
-        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        /* --- Global Styles & Variables --- */
+        :root {
+            --primary-color: #2a7a7b;
+            --secondary-color: #00a896;
+            --text-color: #333;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            color: var(--text-color);
+            line-height: 1.7;
+            background-color: var(--white);
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        main {
+            text-align: center;
+        }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 30px;
+        }
+
+        .button:hover {
+            background-color: #226364;
+            transform: translateY(-3px);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 80px 0;
+        }
+        .hero .main-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .hero .headline {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .hero .sub-headline {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* --- Meaning Section --- */
+        .meaning-section {
+            background-color: var(--light-gray);
+        }
+        .meaning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        .meaning-item {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+        .meaning-item dt {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .meaning-item dd {
+            margin: 0;
+            font-size: 1rem;
+        }
+        .slogan {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: var(--white);
+            border-left: 5px solid var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* --- Comparison Section --- */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        .comparison-card {
+            background-color: var(--light-gray);
+            padding: 25px;
+            border-radius: var(--border-radius);
+        }
+        .comparison-card h3 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .comparison-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .comparison-card li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        .comparison-card li span {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        .chart-container {
+            margin-top: 40px;
+        }
+        .chart-container h4 {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        /* --- Core Features Section --- */
+        .features-section {
+             background-color: var(--light-gray);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .feature-card {
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: var(--border-radius);
+        }
+        .feature-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        /* --- [REVISED] Partners Section --- */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: stretch;
+            text-align: left;
+        }
+        .partners-column h3 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .partner-item {
+            margin-bottom: 25px;
+        }
+        .partner-item:last-child {
+            margin-bottom: 0;
+        }
+        .partner-item h4 {
+            font-size: 1.2rem;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        .partner-item p {
+            margin: 0;
+            font-size: 1rem;
+            color: #555;
+        }
+        .stakeholder-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .stakeholder-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        .stakeholder-list li span {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background: #222;
+            color: #ccc;
+            padding: 40px 0;
+            text-align: center;
+        }
+        .footer p {
+            margin: 0;
+        }
+        .copyright {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h2 { font-size: 1.8rem; }
+            .comparison-grid, .features-grid, .partners-grid {
+                grid-template-columns: 1fr;
+            }
+            .partners-column { margin-bottom: 40px; }
+            .partners-grid { gap: 30px; }
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-gray-800">
+<body>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-
-        <header class="text-center py-16 md:py-24">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-                디딤 <span class="text-blue-600 font-sans tracking-tight">Di:dim</span>
-            </h1>
-            <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                AI 기반 데이터 분석으로 발달장애 청소년의 디지털 세상 적응을 돕는<br>최초의 B2B 맞춤형 훈련 및 치료 보조 솔루션입니다.
-            </p>
-        </header>
-
-        <nav class="sticky top-0 bg-slate-50/80 backdrop-blur-sm z-10 border-b border-gray-200 mb-12">
-            <div class="flex justify-center items-center space-x-4 sm:space-x-8 py-3">
-                <a href="#problem" class="nav-link text-sm sm:text-base text-gray-600 hover:text-blue-600 font-medium transition">문제 제기</a>
-                <a href="#solution" class="nav-link text-sm sm:text-base text-gray-600 hover:text-blue-600 font-medium transition">솔루션 '디딤'</a>
-                <a href="#how-it-works" class="nav-link text-sm sm:text-base text-gray-600 hover:text-blue-600 font-medium transition">작동 방식</a>
-                <a href="#partnership" class="nav-link text-sm sm:text-base text-gray-600 hover:text-blue-600 font-medium transition">파트너십</a>
-                <a href="#risks" class="nav-link text-sm sm:text-base text-gray-600 hover:text-blue-600 font-medium transition">리스크 분석</a>
+    <main>
+        <!-- Top Title & Hero Message -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="main-title">🌱 디딤 Di:dim</h1>
+                <p class="headline">세상을 향한 자신감의 첫걸음, AI 디지털 치료 솔루션 '디딤'이 함께합니다.</p>
+                <p class="sub-headline">데이터 기반의 정밀한 훈련으로, 우리 아이의 가능성을 현실로 만듭니다.</p>
             </div>
-        </nav>
+        </section>
 
-        <main>
-            <section id="problem" class="py-16 md:py-20 scroll-mt-20">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900">현실의 벽: 보이지 않는 디지털 격차</h2>
-                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">디지털 전환 시대, 발달장애 청소년들은 새로운 형태의 사회적 고립에 직면하고 있습니다. 현재의 훈련 방식은 이 문제를 해결하기에 역부족입니다.</p>
-                </div>
+        <!-- The Meaning of "DIDIM" Section -->
+        <section class="meaning-section">
+            <div class="container">
+                <h2>이름에 담긴 의미</h2>
+                <dl class="meaning-grid">
+                    <div class="meaning-item">
+                        <dt>Di:</dt>
+                        <dd><strong>Digital, Diversity, Discovery.</strong><br>디지털 세상에서 발견하는 다양한 가능성.</dd>
+                    </div>
+                    <div class="meaning-item">
+                        <dt>:</dt>
+                        <dd><strong>연결, 다리, 발판.</strong><br>아날로그와 디지털 세상을 잇는 새로운 출발점.</dd>
+                    </div>
+                    <div class="meaning-item">
+                        <dt>dim (디딤)</dt>
+                        <dd>한국어 <strong>'디딤돌'</strong>에서 착안.<br>세상으로 나아가는 단단한 첫걸음.</dd>
+                    </div>
+                </dl>
+                <blockquote class="slogan">
+                    "Di:dim = 디지털 세상으로 나아가는 모두를 위한 단단한 디지털 발판"
+                </blockquote>
+            </div>
+        </section>
 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
-                        <h3 class="text-xl font-bold text-red-600 mb-4">기존 훈련 방식의 명확한 한계</h3>
-                        <ul class="space-y-4 text-gray-700">
-                            <li class="flex items-start">
-                                <span class="text-red-500 font-bold mr-3 mt-1">●</span>
-                                <div><strong class="font-semibold">비개인성:</strong> 모든 아동에게 동일한 속도와 내용의 획일적인 교육으로, 개인의 인지 능력과 특성을 반영하기 어렵습니다.</div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-red-500 font-bold mr-3 mt-1">●</span>
-                                <div><strong class="font-semibold">주관적 평가:</strong> 치료사의 관찰에 의존한 평가는 객관적 데이터가 부족하여, 치료 경과를 정량적으로 추적하고 증명하는 데 한계가 있습니다.</div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-red-500 font-bold mr-3 mt-1">●</span>
-                                <div><strong class="font-semibold">낮은 몰입도:</strong> PPT, 그림 카드 등 정적이고 일방향적인 교육은 아동의 흥미와 참여를 유도하기 어려워 훈련 효과가 저하됩니다.</div>
-                            </li>
-                             <li class="flex items-start">
-                                <span class="text-red-500 font-bold mr-3 mt-1">●</span>
-                                <div><strong class="font-semibold">제한된 환경:</strong> 실제 디지털 환경의 다양성과 예측 불가능성을 반영하지 못해, 습득한 기술이 실생활로 전이되기 어렵습니다.</div>
-                            </li>
+        <!-- "Why DIDIM?" (AS-IS vs. TO-BE) Section -->
+        <section class="comparison-section">
+            <div class="container">
+                <h2>기존 훈련의 어려움 vs ✨ '디딤'의 새로운 가능성</h2>
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <h3>AS-IS: 기존 방식</h3>
+                        <ul>
+                            <li><span>⏳</span> 비효율성: 이동 시간, 인력 등 많은 자원 소모</li>
+                            <li><span>🤯</span> 통제 불가능성: 돌발 변수로 인한 아동의 불안감 증가</li>
+                            <li><span>❓</span> 객관성 부재: 주관적 관찰에 의존하는 '깜깜이 치료'</li>
                         </ul>
                     </div>
-                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100">
-                        <h3 class="text-xl font-bold text-blue-600 mb-4">데이터 기반 DX(디지털 전환)의 필요성</h3>
-                        <p class="mb-4 text-gray-700">치료의 패러다임을 '관찰'에서 '데이터 기반 분석 및 예측'으로 전환해야 합니다. AI 기술은 치료사가 눈으로 볼 수 없었던 아동의 인지 과정과 문제의 핵심 원인을 발견하고, 최적의 맞춤형 치료를 제공하는 가장 강력한 조력자가 될 것입니다.</p>
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
-                            <p class="font-semibold text-blue-800">"본 솔루션은 치료사를 대체하는 것이 아닌, 데이터라는 새로운 눈을 제공하여 치료 효과를 극대화하는 전문가용 치료 보조 도구(Assisting Tool)입니다."</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="solution" class="py-16 md:py-20 bg-white rounded-2xl scroll-mt-20">
-                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900">우리의 솔루션: AI 디지털 치료 플랫폼 '디딤(DIDIM)'</h2>
-                    <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">'디딤'은 발달장애 청소년이 디지털 세상으로 나아가는 '디딤돌'이 되고자 합니다. 3가지 핵심 요소를 통해 개인 맞춤형 훈련과 데이터 기반 분석을 제공합니다.</p>
-                </div>
-
-                <div class="max-w-3xl mx-auto my-12 bg-blue-50 border-t border-b border-blue-200 py-8 px-6 rounded-lg">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">디딤 <span class="font-sans text-blue-600">Di:dim</span>, 이름에 담긴 의미</h3>
-                    <div class="grid md:grid-cols-3 gap-6 text-left mt-6">
-                        <div>
-                            <p class="font-bold text-xl text-blue-700 font-sans">Di:</p>
-                            <p class="text-gray-700 mt-1">Digital, Diversity(다양성), Discovery(발견). 디지털 세상에서 발견하는 다양한 가능성을 의미합니다.</p>
-                        </div>
-                        <div>
-                            <p class="font-bold text-xl text-blue-700 font-sans">:</p>
-                            <p class="text-gray-700 mt-1">연결, 다리, 발판. 아날로그 세상과 디지털 세상을 '이어주는' 새로운 출발점을 상징합니다.</p>
-                        </div>
-                        <div>
-                            <p class="font-bold text-xl text-blue-700">dim (디딤)</p>
-                            <p class="text-gray-700 mt-1">한국어 '디딤돌'에서 착안. 단단히 딛고 세상으로 나아가는 첫걸음을 나타냅니다.</p>
-                        </div>
-                    </div>
-                    <p class="mt-8 font-semibold text-center text-blue-800 bg-white p-4 rounded-md shadow-inner">"Di:dim = 디지털 세상으로 나아가는 모두를 위한 단단한 디지털 발판"</p>
-                </div>
-
-                <div class="flex justify-center border-b border-gray-200 mb-8">
-                    <button data-tab="tab1" class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-blue-600 active">맞춤 훈련 모듈</button>
-                    <button data-tab="tab2" class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-blue-600">AI 분석 엔진</button>
-                    <button data-tab="tab3" class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-500 hover:text-blue-600">전문가용 대시보드</button>
-                </div>
-
-                <div class="max-w-4xl mx-auto">
-                    <div id="tab1" class="tab-content">
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold mb-2">인터랙티브 맞춤 훈련 모듈</h3>
-                            <p class="text-gray-600 mb-8">실제와 동일한 UI/UX 환경에서 다양한 디지털 과업을 안전하게 반복 훈련합니다.</p>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                                <div class="p-4 bg-slate-100 rounded-lg"><p class="font-medium">키오스크 주문</p><span class="text-3xl mt-2 block">🍔</span></div>
-                                <div class="p-4 bg-slate-100 rounded-lg"><p class="font-medium">영화관 예매</p><span class="text-3xl mt-2 block">🎟️</span></div>
-                                <div class="p-4 bg-slate-100 rounded-lg"><p class="font-medium">모바일 메신저</p><span class="text-3xl mt-2 block">💬</span></div>
-                                <div class="p-4 bg-slate-100 rounded-lg"><p class="font-medium">지도 앱 길찾기</p><span class="text-3xl mt-2 block">🗺️</span></div>
-                            </div>
-                            <p class="mt-6 text-gray-600">모든 훈련은 아동의 수준에 맞춰 난이도가 동적으로 조절되어, 성공 경험을 통해 자신감을 키울 수 있도록 돕습니다.</p>
-                        </div>
-                    </div>
-                    <div id="tab2" class="tab-content hidden">
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold mb-2">AI 기반 실시간 분석 엔진</h3>
-                            <p class="text-gray-600 mb-8">KT의 초거대 AI '믿음'이 훈련 과정의 모든 데이터를 실시간으로 분석하여, 눈에 보이지 않는 인지 과정을 파악합니다.</p>
-                            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
-                                <div class="text-center">
-                                    <p class="font-semibold text-lg">사용자 데이터</p>
-                                    <div class="mt-2 space-y-2">
-                                        <p class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">과업 수행 시간</p>
-                                        <p class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">오류 패턴 분석</p>
-                                        <p class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">시선 추적 데이터</p>
-                                    </div>
-                                </div>
-                                <div class="text-5xl text-gray-400">→</div>
-                                <div class="p-6 bg-gray-800 rounded-lg text-white">
-                                    <p class="text-lg font-bold">KT AI '믿음'</p>
-                                    <p class="text-sm">멀티모달 분석</p>
-                                </div>
-                                <div class="text-5xl text-gray-400">→</div>
-                                <div class="text-center">
-                                    <p class="font-semibold text-lg">분석 결과</p>
-                                    <div class="mt-2 space-y-2">
-                                        <p class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">취약점 진단</p>
-                                        <p class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">자동 난이도 조절</p>
-                                        <p class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">다음 훈련 추천</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="tab3" class="tab-content hidden">
-                        <div class="text-center">
-                            <h3 class="text-2xl font-bold mb-2">전문가용 치료 경과 대시보드</h3>
-                            <p class="text-gray-600 mb-6">치료사와 센터장을 위한 데이터 시각화 리포트입니다. 아동의 성과를 장기적으로 추적하고, AI가 발견한 특이 패턴을 확인하여 심층 관찰을 유도합니다.</p>
-                            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 max-w-2xl mx-auto">
-                                <h4 class="text-lg font-bold text-left">주간 이상 패턴 감지 리포트</h4>
-                                <p class="text-sm text-gray-500 text-left mb-4">AI가 발견한 특정 행동 패턴의 빈도를 보여줍니다.</p>
-                                <div class="h-64">
-                                    <canvas id="patternsChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="how-it-works" class="py-16 md:py-20 scroll-mt-20">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900">데이터가 보여주는 성장과 통찰</h2>
-                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">'디딤'의 대시보드는 치료 과정을 어떻게 객관적인 데이터로 변환하고, 새로운 통찰을 제공하는지 보여줍니다.</p>
-                </div>
-                
-                <div class="grid lg:grid-cols-2 gap-12 items-start">
-                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-                            <div>
-                                <h3 class="text-xl font-bold">훈련 성과 장기 추이</h3>
-                                <p class="text-sm text-gray-500">훈련 회차가 거듭될수록 과업 수행 시간이 단축됩니다.</p>
-                            </div>
-                            <select id="taskSelector" class="mt-3 sm:mt-0 text-sm p-2 border rounded-md bg-white">
-                                <option value="kiosk" selected>키오스크 주문</option>
-                                <option value="ticket">영화관 티켓 발권</option>
-                                <option value="map">지도 앱 길찾기</option>
-                            </select>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="progressChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                        <h3 class="text-xl font-bold mb-1">AI 시선 분석 (시뮬레이션)</h3>
-                        <p class="text-sm text-gray-500 mb-4">아동이 화면의 어느 부분을 놓치는지 직관적으로 파악합니다.</p>
-                        <div class="relative w-full max-w-md mx-auto aspect-[3/4] bg-gray-200 rounded-lg overflow-hidden">
-                            <img src="https://placehold.co/600x800/e2e8f0/334155?text=Kiosk+UI" class="w-full h-full object-cover" alt="Kiosk UI">
-                            <canvas id="heatmapCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
-                        </div>
-                         <div class="text-center mt-4">
-                            <button id="successBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600 transition">성공 시 시선 패턴</button>
-                            <button id="failBtn" class="px-4 py-2 bg-red-500 text-white rounded-md text-sm hover:bg-red-600 transition">실패 시 시선 패턴</button>
-                        </div>
-                        <div id="heatmap-insight" class="mt-4 bg-yellow-50 border-l-4 border-yellow-400 p-3 text-sm text-yellow-800 rounded-r-lg">
-                           '결제' 버튼 주변에 시선이 머물지 못하는 패턴이 반복됩니다.
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="partnership" class="py-16 md:py-20 bg-gray-800 text-white rounded-2xl scroll-mt-20">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold">함께 만드는 미래: 강력한 파트너십</h2>
-                    <p class="mt-3 text-lg text-gray-300 max-w-2xl mx-auto">대기업의 기술력과 현장의 전문성이 결합하여 최고의 시너지를 창출합니다.</p>
-                </div>
-                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 text-center">
-                    <div class="bg-gray-700 p-8 rounded-lg">
-                        <h3 class="text-2xl font-bold text-blue-400 mb-4">KT (기술/인프라 파트너)</h3>
-                        <ul class="space-y-3 text-gray-200 text-left">
-                            <li><strong class="font-semibold">✓ AI 플랫폼 및 기술 제공:</strong> 초거대 AI '믿음', 멀티모달 인식 기술</li>
-                            <li><strong class="font-semibold">✓ 클라우드 인프라:</strong> 안정적이고 보안성이 검증된 서버 운영</li>
-                            <li><strong class="font-semibold">✓ R&D 및 사업화 지원:</strong> 지속적인 기술 고도화 및 신규 기능 개발</li>
-                             <li><strong class="font-semibold">✓ 마케팅 및 판로 지원:</strong> 정부 과제 연계 및 전국 단위 홍보</li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-700 p-8 rounded-lg">
-                        <h3 class="text-2xl font-bold text-green-400 mb-4">발달센터 (전문성/현장 파트너)</h3>
-                        <ul class="space-y-3 text-gray-200 text-left">
-                            <li><strong class="font-semibold">✓ 임상/치료 전문성 제공:</strong> 효과성이 검증된 치료 프로토콜, 커리큘럼 설계</li>
-                            <li><strong class="font-semibold">✓ 핵심 평가지표(KPI) 정의:</strong> 데이터 기반 치료 효과성 자문</li>
-                            <li><strong class="font-semibold">✓ 콘텐츠 기획 및 실증:</strong> 아동 맞춤형 훈련 콘텐츠 공동 기획</li>
-                            <li><strong class="font-semibold">✓ 현장(Test Bed) 제공:</strong> 치료사, 아동, 학부모의 실제 사용성 피드백</li>
+                    <div class="comparison-card">
+                        <h3>TO-BE: 디딤의 방식</h3>
+                        <ul>
+                            <li><span>🛡️</span> 안전한 환경: 통제된 가상 공간에서 안정적인 훈련</li>
+                            <li><span>📊</span> 데이터 기반: 행동, 인지 데이터를 통한 객관적 분석</li>
+                            <li><span>🎯</span> 맞춤형 훈련: AI가 수준에 맞는 최적의 코스 추천</li>
                         </ul>
                     </div>
                 </div>
-            </section>
-
-            <section id="risks" class="py-16 md:py-20 scroll-mt-20">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900">예상되는 도전과 투명한 대응 전략</h2>
-                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">모든 혁신에는 어려움이 따릅니다. 우리는 예상되는 리스크를 투명하게 공개하고, 체계적인 대응 전략을 통해 이를 극복해 나갈 것입니다.</p>
+                <div class="chart-container">
+                    <h4>데이터 기반 객관성 확보 수준 비교</h4>
+                    <canvas id="objectivityChart"></canvas>
                 </div>
+                <a href="background.html" class="button">자세한 제안 배경 알아보기</a>
+            </div>
+        </section>
 
-                <div class="max-w-3xl mx-auto space-y-4">
-                    <div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-200">
-                        <button class="accordion-header w-full flex justify-between items-center text-left p-5">
-                            <span class="font-semibold text-lg text-gray-800">1. 사업 및 재무 리스크</span>
-                            <span class="accordion-icon text-2xl text-gray-500 font-light transform transition-transform">+</span>
-                        </button>
-                        <div class="accordion-content px-5 pb-5 text-gray-600">
-                            <p><strong class="font-semibold text-gray-700">● 리스크:</strong> 초기 시장의 불확실성, B2B2C 모델의 수익화 지연 가능성, 높은 초기 R&D 투자 비용 부담.</p>
-                            <p class="mt-2"><strong class="font-semibold text-green-600">✓ 대응 전략:</strong> 초기에는 정부/지자체 바우처 사업, ESG 연계 사회공헌 프로젝트를 통해 안정적인 초기 매출 확보. 이후 데이터 기반 부가 서비스(예: 심층 분석 리포트)를 통한 수익 모델 다각화. KT의 기술 자산을 활용하여 R&D 비용 효율화.</p>
-                        </div>
+        <!-- Core Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <h2>'디딤'의 3가지 핵심 기능</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon">📱</div>
+                        <h3>현실 모방 시뮬레이터</h3>
+                        <p>안전한 가상 환경에서<br>반복 훈련</p>
                     </div>
-                    
-                     <div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-200">
-                        <button class="accordion-header w-full flex justify-between items-center text-left p-5">
-                            <span class="font-semibold text-lg text-gray-800">2. 기술 및 데이터 리스크</span>
-                             <span class="accordion-icon text-2xl text-gray-500 font-light transform transition-transform">+</span>
-                        </button>
-                        <div class="accordion-content px-5 pb-5 text-gray-600">
-                            <p><strong class="font-semibold text-gray-700">● 리스크:</strong> 일반 웹캠의 시선 추적 정확도 한계, 민감 정보(개인 행동/생체 데이터) 수집에 대한 보호자 거부감, AI 모델의 오해석 및 편향 가능성.</p>
-                            <p class="mt-2"><strong class="font-semibold text-green-600">✓ 대응 전략:</strong> 초기에는 전문 아이트래커 장비를 구비한 선도 센터와 협력하여 데이터 정확도 확보 및 모델 고도화. 데이터는 비식별화 처리 후 KT 클라우드에 암호화 저장. AI 분석 결과는 '의사결정 보조' 정보로만 제공하며, "결제 단계에서 평균 대비 +8초 소요"와 같이 해석의 여지가 없는 '사실' 데이터와 근거를 함께 제시하여 치료사의 비판적 수용을 지원.</p>
-                        </div>
+                    <div class="feature-card">
+                        <div class="icon">🧠</div>
+                        <h3>AI 멀티모달 분석 엔진</h3>
+                        <p>행동 이면의 데이터까지<br>심층 분석</p>
                     </div>
-
-                    <div class="accordion-item bg-white rounded-lg shadow-sm border border-gray-200">
-                        <button class="accordion-header w-full flex justify-between items-center text-left p-5">
-                            <span class="font-semibold text-lg text-gray-800">3. 윤리 및 사회적 리스크</span>
-                             <span class="accordion-icon text-2xl text-gray-500 font-light transform transition-transform">+</span>
-                        </button>
-                        <div class="accordion-content px-5 pb-5 text-gray-600">
-                            <p><strong class="font-semibold text-gray-700">● 리스크:</strong> 기술에 대한 과도한 의존으로 인한 치료사의 역할 축소 우려, 디지털 기기 사용 증가에 대한 학부모의 불안감, 기관별 도입 비용 차이로 인한 또 다른 '치료 격차' 발생 가능성.</p>
-                            <p class="mt-2"><strong class="font-semibold text-green-600">✓ 대응 전략:</strong> '치료 보조 도구'로서의 포지셔닝을 명확히 하고, 치료사 대상 정기 교육을 통해 기술 활용 능력과 데이터 해석 역량 강화 지원. 훈련 시간을 엄격히 제한하고, 훈련 효과 데이터를 학부모에게 투명하게 공유하여 신뢰 구축. 사회적 기업, 공공기관과 협력하여 소외계층 지원 프로그램을 마련하고 보급형 버전 개발을 검토.</p>
-                        </div>
+                    <div class="feature-card">
+                        <div class="icon">📊</div>
+                        <h3>전문가용 대시보드</h3>
+                        <p>성장을 한눈에 보는<br>시각적 리포트</p>
                     </div>
                 </div>
-            </section>
-        </main>
+                <a href="solution.html" class="button">솔루션 기능 자세히 보기</a>
+            </div>
+        </section>
 
-        <footer class="text-center py-12 border-t border-gray-200">
-            <p class="text-gray-700 font-bold text-lg">KT DX 사업 부문</p>
-            <p class="text-gray-500 mt-2">새로운 디지털 시대를 열어갈 파트너를 기다립니다.</p>
-        </footer>
-    </div>
+        <!-- Target & Partners Section -->
+        <section class="partners-section">
+            <div class="container">
+                <h2>🤝 함께 시너지를 만드는 파트너십</h2>
+                <div class="partners-grid">
+                    <div class="partners-column">
+                        <div class="partner-item">
+                            <h4>💻 기술/인프라 파트너: KT</h4>
+                            <p>초거대 AI '믿음(Mi:dm)'과 안정적인 클라우드 인프라를 통해 '디딤'의 기술 기반을 제공합니다.</p>
+                        </div>
+                        <div class="partner-item">
+                            <h4>👩‍⚕️ 전문성/현장 파트너: 아동발달센터</h4>
+                            <p>치료 현장의 전문성과 데이터를 기반으로 솔루션의 효과성을 검증하고 고도화합니다.</p>
+                        </div>
+                    </div>
+                    <div class="partners-column">
+                        <h3>이런 분들을 위해 고민합니다</h3>
+                        <ul class="stakeholder-list">
+                            <li><span>🏫</span> <strong>교육/지원 기관장:</strong> 차별화된 경쟁력과 운영 효율화</li>
+                            <li><span>👩‍⚕️</span> <strong>치료사:</strong> 행정 업무 경감 및 치료 효과 극대화</li>
+                            <li><span>👨‍👩‍👧‍👦</span> <strong>학부모:</strong> 자녀의 성장 과정을 눈으로 확인</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="about.html" class="button">목표 고객 및 파트너 소개</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p><strong>DIDIM Project</strong></p>
+            <p class="copyright">© 2025 DIDIM. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const chartData = {
-                kiosk: {
-                    labels: ['1회', '2회', '3회', '4회', '5회', '6회', '7회', '8회'],
-                    data: [120, 105, 95, 80, 75, 68, 60, 55],
-                },
-                ticket: {
-                    labels: ['1회', '2회', '3회', '4회', '5회', '6회', '7회', '8회'],
-                    data: [150, 140, 125, 110, 100, 92, 88, 80],
-                },
-                map: {
-                    labels: ['1회', '2회', '3회', '4회', '5회', '6회', '7회', '8회'],
-                    data: [180, 175, 160, 140, 132, 120, 115, 108],
-                }
-            };
-
-            const ctxProgress = document.getElementById('progressChart').getContext('2d');
-            let progressChart = new Chart(ctxProgress, {
-                type: 'line',
-                data: {
-                    labels: chartData.kiosk.labels,
-                    datasets: [{
-                        label: '과업 수행 시간(초)',
-                        data: chartData.kiosk.data,
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            title: { display: true, text: '소요 시간 (초)' }
-                        },
-                        x: {
-                            title: { display: true, text: '훈련 회차' }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return ` ${context.dataset.label}: ${context.raw}초`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            document.getElementById('taskSelector').addEventListener('change', function(e) {
-                const selectedTask = e.target.value;
-                progressChart.data.labels = chartData[selectedTask].labels;
-                progressChart.data.datasets[0].data = chartData[selectedTask].data;
-                progressChart.update();
-            });
-
-            const heatmapCanvas = document.getElementById('heatmapCanvas');
-            const heatmapCtx = heatmapCanvas.getContext('2d');
-            const insightText = document.getElementById('heatmap-insight');
-
-            function drawHeatmap(points) {
-                heatmapCtx.clearRect(0, 0, heatmapCanvas.width, heatmapCanvas.height);
-                points.forEach(p => {
-                    const gradient = heatmapCtx.createRadialGradient(p.x, p.y, p.r * 0.1, p.x, p.y, p.r);
-                    gradient.addColorStop(0, 'rgba(255, 0, 0, 0.5)');
-                    gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
-                    heatmapCtx.fillStyle = gradient;
-                    heatmapCtx.beginPath();
-                    heatmapCtx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-                    heatmapCtx.fill();
-                });
-            }
-
-            const heatmaps = {
-                success: [
-                    { x: 150, y: 200, r: 80 }, { x: 150, y: 350, r: 90 }, { x: 150, y: 650, r: 100 }
+    // --- Chart.js Setup for Comparison Chart ---
+    const ctx = document.getElementById('objectivityChart').getContext('2d');
+    const objectivityChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['기존 방식', "'디딤' 방식"],
+            datasets: [{
+                label: '데이터 기반 객관성',
+                data: [20, 95],
+                backgroundColor: [
+                    'rgba(220, 220, 220, 0.6)', // Gray for '기존 방식'
+                    'rgba(42, 122, 123, 0.6)'  // Primary color for '디딤 방식'
                 ],
-                fail: [
-                    { x: 150, y: 200, r: 120 }, { x: 100, y: 450, r: 100 }, { x: 200, y: 500, r: 90 }
-                ]
-            };
-            
-            function setCanvasSize() {
-                const rect = heatmapCanvas.parentElement.getBoundingClientRect();
-                heatmapCanvas.width = rect.width;
-                heatmapCanvas.height = rect.height;
-                drawHeatmap(heatmaps.fail);
-            }
-
-            document.getElementById('successBtn').addEventListener('click', () => {
-                drawHeatmap(heatmaps.success);
-                insightText.textContent = "성공 시, 주요 버튼(메뉴 선택, 결제)을 순차적으로 정확히 응시하는 패턴을 보입니다.";
-            });
-
-            document.getElementById('failBtn').addEventListener('click', () => {
-                drawHeatmap(heatmaps.fail);
-                insightText.textContent = "'결제' 버튼 주변에 시선이 머물지 못하는 패턴이 반복됩니다.";
-            });
-            
-            window.addEventListener('resize', setCanvasSize);
-            setCanvasSize();
-
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            let patternsChart = null;
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.dataset.tab;
-
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    tabContents.forEach(content => {
-                        if (content.id === tabId) {
-                            content.classList.remove('hidden');
-                        } else {
-                            content.classList.add('hidden');
+                borderColor: [
+                    'rgba(180, 180, 180, 1)',
+                    'rgba(42, 122, 123, 1)'
+                ],
+                borderWidth: 1,
+                barThickness: 40
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%'
                         }
-                    });
-
-                    if (tabId === 'tab3' && !patternsChart) {
-                        const ctxPatterns = document.getElementById('patternsChart').getContext('2d');
-                        patternsChart = new Chart(ctxPatterns, {
-                            type: 'bar',
-                            data: {
-                                labels: ['결제 버튼 앞 머뭇거림', '특정 영역 미응시', '동일 오류 반복', '과업 이탈 시도'],
-                                datasets: [{
-                                    label: '감지 횟수',
-                                    data: [12, 8, 15, 5],
-                                    backgroundColor: [
-                                        'rgba(255, 159, 64, 0.5)',
-                                        'rgba(75, 192, 192, 0.5)',
-                                        'rgba(255, 99, 132, 0.5)',
-                                        'rgba(153, 102, 255, 0.5)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 159, 64, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(153, 102, 255, 1)'
-                                    ],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                indexAxis: 'y',
-                                scales: {
-                                    x: {
-                                        beginAtZero: true,
-                                        title: { display: true, text: '주간 감지 횟수' }
-                                    }
-                                },
-                                plugins: {
-                                    legend: { display: false }
-                                }
-                            }
-                        });
                     }
-                });
-            });
-
-            document.querySelectorAll('.nav-link').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-            
-            const accordionItems = document.querySelectorAll('.accordion-item');
-            accordionItems.forEach(item => {
-                const header = item.querySelector('.accordion-header');
-                const content = item.querySelector('.accordion-content');
-                const icon = item.querySelector('.accordion-icon');
-
-                header.addEventListener('click', () => {
-                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
-                    
-                    accordionItems.forEach(i => {
-                        i.querySelector('.accordion-content').style.maxHeight = '0px';
-                        i.querySelector('.accordion-icon').textContent = '+';
-                        i.querySelector('.accordion-icon').classList.remove('rotate-45');
-                    });
-
-                    if (!isOpen) {
-                        content.style.maxHeight = content.scrollHeight + 'px';
-                        icon.textContent = '−';
-                        icon.classList.add('rotate-45');
-                    }
-                });
-            });
-        });
+                }
+            }
+        }
+    });
     </script>
+
 </body>
 </html>
