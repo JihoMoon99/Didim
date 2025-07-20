@@ -361,23 +361,64 @@
         <!-- AS-IS Section -->
         <section class="as-is-section">
             <div class="container">
-                <h2>👎 AS-IS: 기존 현장 실습 방식의 명확한 한계</h2>
-                <p class="section-description">현재 대부분의 디지털 적응 훈련은 치료사가 아동과 실제 매장에 동행하는 방식에 의존합니다. 이 방식은 많은 시간과 비용이 소요될 뿐만 아니라, 우리가 미처 보지 못하는 문제들을 안고 있습니다.</p>
+                <h2>AS-IS: '깜깜이 치료'를 유발하는 현행 교육 방식의 구조적 한계</h2>
+                <p class="section-description">
+                    현재 발달장애 청소년을 위한 디지털 적응 훈련은 여러 방식으로 시도되고 있으나, 투입되는 노력과 비용에도 불구하고 실질적인 능력 향상으로 이어지지 못하는 구조적인 비효율에 갇혀 있습니다.
+                </p>
                 <div class="pain-points-grid">
+                    <!-- 오프라인 현장 실습 카드 -->
                     <div class="pain-point-card">
-                        <div class="icon">⏳</div>
-                        <h3>비효율성</h3>
-                        <p>이동 시간, 인력 문제 등 많은 자원이 소모됩니다.</p>
+                        <div class="icon">🧑‍🏫</div>
+                        <h3>오프라인 현장 실습</h3>
+                        <ul style="text-align:left;">
+                            <li>많은 시간 ⏰, 높은 비용 💸, 전문 인력 필요</li>
+                            <li>통제 불가능한 현장(소음, 대기 줄 등) → 아동 불안감 증가</li>
+                            <li>특정 상황 반복 훈련 불가</li>
+                            <li>성과 판단이 치료사의 주관에 의존</li>
+                        </ul>
+                        <div class="pain-summary">
+                            <strong>핵심 문제:</strong> 예측 불가능한 변수로 인해 안정적 훈련이 어렵고, 객관적 데이터가 부족함
+                        </div>
                     </div>
+                    <!-- PPT/동영상 기반 교육 카드 -->
                     <div class="pain-point-card">
-                        <div class="icon">🤯</div>
-                        <h3>통제 불가능성</h3>
-                        <p>매장의 소음, 대기 줄 등 돌발 변수가 아동의 불안감을 높여 훈련 효과를 떨어뜨립니다.</p>
+                        <div class="icon">📺</div>
+                        <h3>PPT/동영상 기반 교육</h3>
+                        <ul style="text-align:left;">
+                            <li>일방향 정보 전달(교사 → 학습자)</li>
+                            <li>실제 조작 경험 없음, 상호작용 부재</li>
+                            <li>돌발상황(결제 오류 등) 대처 능력 미흡</li>
+                            <li>현실 적용성 낮음</li>
+                        </ul>
+                        <div class="pain-summary">
+                            <strong>핵심 문제:</strong> 실제 환경에서 필요한 대처 능력과 상호작용 경험이 부족함
+                        </div>
                     </div>
+                    <!-- VR/AR 기반 훈련 카드 -->
                     <div class="pain-point-card">
-                        <div class="icon">❓</div>
-                        <h3>객관성 부재</h3>
-                        <p>치료사의 주관적 관찰에 의존해 '깜깜이 치료'라는 불신을 낳고, 성과 증명이 어렵습니다.</p>
+                        <div class="icon">🕶️</div>
+                        <h3>VR/AR 기반 훈련</h3>
+                        <ul style="text-align:left;">
+                            <li>가상 세계와 현실의 단절(전이 효과 낮음)</li>
+                            <li>개인별 맞춤 훈련 불가</li>
+                            <li>고가 장비 필요, 콘텐츠 업데이트 어려움</li>
+                        </ul>
+                        <div class="pain-summary">
+                            <strong>핵심 문제:</strong> 현실 적용성 부족, 비용·운영 부담 큼
+                        </div>
+                    </div>
+                </div>
+                <!-- 공통적 핵심 문제 카드: 전체 너비 사용 -->
+                <div class="pain-point-card" style="margin-top:40px; grid-column:1/-1; background:#f8f9fa;">
+                    <div class="icon">⚫</div>
+                    <h3>공통적 핵심 문제: 데이터가 증발하는 '블랙박스(Black Box)' 훈련</h3>
+                    <ul style="text-align:left;">
+                        <li>훈련 과정과 결과에 대한 객관적 데이터 부재</li>
+                        <li>주관적 결과 해석(어떻게, 왜 성공/실패했는지 알 수 없음)</li>
+                        <li>체계적 원인 분석과 맞춤형 성장 관리 기회 차단</li>
+                    </ul>
+                    <div class="pain-summary">
+                        <strong>결론:</strong> 모든 방식이 '감(感)'에 의존, 데이터 기반 치료가 불가능함
                     </div>
                 </div>
             </div>
@@ -391,8 +432,9 @@
         <!-- TO-BE Section -->
         <section class="to-be-section">
             <div class="container">
-                <h2>✨ TO-BE: 데이터 기반 정밀 분석 및 예측</h2>
-                <p class="section-description">'디딤'은 안전한 가상 환경에서 사용자의 행동, 인지, 수행 능력을 실시간으로 수집하고 AI로 분석합니다. 이를 통해 치료사는 눈으로 볼 수 없었던 문제의 핵심 원인을 파악하고, 아동에게 최적화된 맞춤형 치료를 제공할 수 있습니다.</p>
+                <h2>✨ TO-BE: 데이터로 증명하는 정밀 맞춤형 훈련/h2>
+                <p class="section-description">디딤'은 현실의 디지털 기기(키오스크, 모바일 앱 등)를 태블릿 안에 그대로 구현한 '인터랙티브 시뮬레이션' 환경을 제공합니다. 이는 단절된 가상 세계가 아닌, 실제와 동일한 과업을 안전하게 반복 훈련할 수 있는 정밀한 디지털 훈련장입니다.</p>
+                    <p>이 환경 안에서 사용자의 모든 상호작용(터치, 시선, 소요 시간 등)은 실시간 데이터로 수집되고 AI가 분석합니다. 이를 통해 치료사는 눈으로 볼 수 없었던 문제의 핵심 원인을 파악하고, 아동에게 최적화된 맞춤형 치료를 제공할 수 있습니다.</p>
                 
                 <div class="comparison-chart-container">
                     <div class="comparison-chart-text">
